@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{%block content %}
+<ul>
+    {% for item in obj %}
+    <li>
+        <h2><a href="{% url 'detail_view' item.slug %}">{{item.title}}</a></h2>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock %}

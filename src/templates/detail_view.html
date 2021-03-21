@@ -4,5 +4,6 @@
 <p>{{obj.description}}</p>
 <span />
 <h5>{{obj.price}}</h5>
+<a href="{% url 'update_view' obj.slug %}">Edit</a>
 <a href="{% url 'list_view' %}">List</a>
 {% endblock %}

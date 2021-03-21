@@ -15,7 +15,6 @@ class Product(models.Model):
         return self.title
 
 def product_pre_save_reciever(sender, instance, *args, **kwargs):
-    print(instance)
     if not instance.slug:
         instance.slug = slugify(instance.title)
 pre_save.connect(product_pre_save_reciever, sender=Product)

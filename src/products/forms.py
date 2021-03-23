@@ -51,3 +51,11 @@ class ProductModelForm(forms.ModelForm):
             raise forms.ValidationError('Price must not be greater than $100')
         else:
             return price
+
+    # def clean_title(self):
+    #     title = self.cleaned_data.get('title')
+    #     from django.utils.text import slugify
+    #     slug = slugify(title)
+    #     if Product.objects.exclude(pk=self.instance.pk).filter(slug=slug).exists():
+    #         raise forms.ValidationError('A Product with this title already exists.')
+    #     return title

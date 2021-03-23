@@ -1,11 +1,15 @@
+from django.conf import settings
 from django.db import models
 
 # Create your models here.
 from django.db.models.signals import pre_save
+from django.urls import reverse
 from django.utils.text import slugify
 
 
 class Product(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    managers = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='managers_products')
     title = models.CharField(max_length=100)
     slug = models.SlugField(unique=True)
     description = models.TextField(null=True, blank=True)
@@ -13,6 +17,9 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('products:detail', kwargs={'slug':self.slug})
 
 def create_slug(instance, new_slug=None):
     slug = slugify(instance.title)

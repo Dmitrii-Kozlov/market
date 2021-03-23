@@ -3,7 +3,7 @@ from .models import Product
 # Register your models here.
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "description", "price"]
+    list_display = ["__str__", "description", "price", "user"]
     list_filter = ["price"]
     search_fields = ["title", "description"]
     list_editable = ["price"]

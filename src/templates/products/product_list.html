@@ -4,10 +4,10 @@
 <h2>Products</h2>
     <ul>
         {% for product in object_list %}
-            <li><a href="{% url 'product_detail_view' product.slug %}"> {{ product.title }}</a> - {{ product.description }}- {{ product.price }}</li>
+            <li><a href={{ product.get_absolute_url }}> {{ product.title }}</a> - {{ product.description }}- {{ product.price }}</li>
         {% empty %}
         <h3>No Products yet</h3>
         {% endfor %}
     </ul>
-<a href="{% url 'product_create_view' %}">Add product</a>
+<a href="{% url 'products:create' %}">Add product</a>
 {% endblock %}

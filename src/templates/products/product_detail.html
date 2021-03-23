@@ -4,7 +4,7 @@
 <p>{{object.description}}</p>
 <span />
 <h5>{{object.price}}</h5>
-<a href="{% url 'product_list_view' %}">List</a>
-<a href="{% url 'product_update_view' object.slug %}">Edit</a>
+<a href="{% url 'products:list' %}">List</a>
+<a href="{% url 'products:update' object.slug %}">Edit</a>
 
 {% endblock %}

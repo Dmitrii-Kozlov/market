@@ -1,5 +1,6 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import IntegrityError
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
@@ -8,40 +9,38 @@ from .models import Product
 from .forms import ProductAddForm, ProductModelForm
 # Create your views here.
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     template_name = 'update_view.html'
     form_class = ProductModelForm
-    success_url = reverse_lazy('product_list_view')
+    success_url = reverse_lazy('products:list')
 
-class ProductCreateView(CreateView):
+    def get_object(self, queryset=None):
+        user = self.request.user
+        obj = super(ProductUpdateView, self).get_object()
+        if obj.user == user or user in obj.managers.all():
+            return obj
+        else:
+            raise Http404
+
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     template_name = 'create_view.html'
     form_class = ProductModelForm
-    success_url = reverse_lazy('product_list_view')
+    success_url = reverse_lazy('products:list')
 
-    # def form_valid(self, form):
-    #     try:
-    #         form.save()
-    #     except IntegrityError:
-    #         self.instance = form.save(commit=False)
-    #         self.instance.slug += '-n'
-    #         #self.form_valid(self.instance)
-    #         #self.instance.save()
-    #         return super(ProductCreateView, self).form_valid(form)
-    #     return super(ProductCreateView, self).form_valid(form)
+    def form_valid(self, form):
+        user = self.request.user
+        form.instance.user = user
+        valid_data = super(ProductCreateView, self).form_valid(form)
+        form.instance.managers.add(user)
+        return valid_data
 
 class ProductDetailView(DetailView):
     model = Product
 
 class ProductListView(ListView):
     model = Product
-    #template_name = 'list_view.html'
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['obj'] = self.get_queryset()
-    #     return context
 
 def create_view(request):
     if request.method == "POST":

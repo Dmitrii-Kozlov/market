@@ -1,6 +1,10 @@
+import os
+from wsgiref.util import FileWrapper
+
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import IntegrityError
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
@@ -38,6 +42,19 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 
 class ProductDetailView(DetailView):
     model = Product
+
+class ProductDownloadView(DetailView):
+    model = Product
+    def get(self, request, *args, **kwargs):
+        obj = self.get_object()
+        filepath = os.path.join(settings.PROTECTED_ROOT, obj.media.path)
+        wrapper = FileWrapper(open(filepath, 'rb'))
+        responce = HttpResponse(wrapper, content_type='application/force-download')
+        responce["Content-Disposition"] = f"attachment; filename={obj.media.name}"
+        responce["X-SendFile"] = str(obj.media.name)
+        return responce
+
+
 
 class ProductListView(ListView):
     model = Product

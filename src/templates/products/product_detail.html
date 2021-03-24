@@ -4,6 +4,11 @@
 <p>{{object.description}}</p>
 <span />
 <h5>{{object.price}}</h5>
+
+{% if object.media %}
+<a href="{{ object.get_download }}">Download</a>
+{% endif %}
+
 <a href="{% url 'products:list' %}">List</a>
 <a href="{% url 'products:update' object.slug %}">Edit</a>
 

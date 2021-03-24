@@ -37,7 +37,7 @@ class ProductModelForm(forms.ModelForm):
         # widgets = {"description": forms.Textarea(attrs={
         #     "placeholder": "Description"
         # })}
-    publish = forms.ChoiceField(choices=PUBLICH_CHOISES, widget=forms.RadioSelect)
+    publish = forms.ChoiceField(choices=PUBLICH_CHOISES, widget=forms.RadioSelect, required=False)
     description = forms.CharField(widget=forms.Textarea(
         attrs={
             "placeholder": "New Description"

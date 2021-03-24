@@ -1,4 +1,5 @@
 import os
+from mimetypes import guess_type
 from wsgiref.util import FileWrapper
 
 from django.conf import settings
@@ -48,9 +49,16 @@ class ProductDownloadView(DetailView):
     def get(self, request, *args, **kwargs):
         obj = self.get_object()
         filepath = os.path.join(settings.PROTECTED_ROOT, obj.media.path)
+        guessed_type = guess_type(filepath)[0]
         wrapper = FileWrapper(open(filepath, 'rb'))
-        responce = HttpResponse(wrapper, content_type='application/force-download')
-        responce["Content-Disposition"] = f"attachment; filename={obj.media.name}"
+        # mimetype = 'application/force-download'
+        # if guessed_type:
+        #     mimetype = guessed_type
+        mimetype = guessed_type if guessed_type else 'application/force-download'
+        responce = HttpResponse(wrapper, content_type=mimetype)
+        if not request.GET.get('preview'):
+            responce["Content-Disposition"] = f"attachment; filename={obj.media.name}"
+        #responce["Content-Disposition"] = f"attachment; filename={obj.media.name}"
         responce["X-SendFile"] = str(obj.media.name)
         return responce
 

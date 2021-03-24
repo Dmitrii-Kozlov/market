@@ -7,9 +7,11 @@
 
 {% if object.media %}
 <a href="{{ object.get_download }}">Download</a>
-{% endif %}
+<a href="{{ object.get_download }}?preview=True">Preview</a>
 
+{% endif %}
+<p>
 <a href="{% url 'products:list' %}">List</a>
 <a href="{% url 'products:update' object.slug %}">Edit</a>
-
+</p>
 {% endblock %}

@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.utils.text import slugify
 
 def download_media_location(instance, filename):
-    return f'{instance.id}/{filename}'
+    return f'{instance.slug}/{filename}'
 
 class Product(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -45,3 +45,28 @@ def product_pre_save_reciever(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = create_slug(instance)
 pre_save.connect(product_pre_save_reciever, sender=Product)
+
+def thumbnail_location(instance, filename):
+    return f'{instance.product.slug}/{filename}'
+
+class Thumbnail(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    width = models.CharField(max_length=20, null=True, blank=True)
+    height = models.CharField(max_length=20, null=True, blank=True)
+    media = models.ImageField(blank=True, null=True,
+                              width_field="width",
+                              height_field="height",
+                              upload_to=thumbnail_location,
+                              )
+    def __str__(self):
+        return str(self.media.path)
+
+class MyProducts(models.Model):
+    class Meta:
+        verbose_name_plural = 'MyProducts'
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Product, blank=True)
+
+    def __str__(self):
+        return f'{self.products.count()}'

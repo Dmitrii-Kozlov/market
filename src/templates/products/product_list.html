@@ -2,9 +2,17 @@
 
 {% block content %}
 <h2>Products</h2>
+<p>
+    <form method="get" action="">
+    <input type="text" name="q" placeholder="search">
+    <input type="submit" value="Search">
+</form>
+</p>
     <ul>
         {% for product in object_list %}
-            <li><a href={{ product.get_absolute_url }}> {{ product.title }}</a> - {{ product.description }}- {{ product.price }}</li>
+            <li><a href={{ product.get_absolute_url }}> {{ product.title }}</a> <br>
+                {{ product.description|truncatewords:5 }} <br>
+                {{ product.price }}</li>
         {% empty %}
         <h3>No Products yet</h3>
         {% endfor %}

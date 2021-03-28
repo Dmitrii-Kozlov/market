@@ -5,7 +5,7 @@
 <span />
 <h5>{{object.price}}</h5>
 
-{% if object.media %}
+{% if request.user.is_authenticated and object.media and object in request.user.myproducts.products.all%}
 <a href="{{ object.get_download }}">Download</a>
 <a href="{{ object.get_download }}?preview=True">Preview</a>
 

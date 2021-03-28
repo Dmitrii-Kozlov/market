@@ -5,6 +5,7 @@ from wsgiref.util import FileWrapper
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import IntegrityError
+from django.db.models import Q
 from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
@@ -48,24 +49,37 @@ class ProductDownloadView(DetailView):
     model = Product
     def get(self, request, *args, **kwargs):
         obj = self.get_object()
-        filepath = os.path.join(settings.PROTECTED_ROOT, obj.media.path)
-        guessed_type = guess_type(filepath)[0]
-        wrapper = FileWrapper(open(filepath, 'rb'))
-        # mimetype = 'application/force-download'
-        # if guessed_type:
-        #     mimetype = guessed_type
-        mimetype = guessed_type if guessed_type else 'application/force-download'
-        responce = HttpResponse(wrapper, content_type=mimetype)
-        if not request.GET.get('preview'):
-            responce["Content-Disposition"] = f"attachment; filename={obj.media.name}"
-        #responce["Content-Disposition"] = f"attachment; filename={obj.media.name}"
-        responce["X-SendFile"] = str(obj.media.name)
-        return responce
+        if obj in request.user.myproducts.products.all():
+            filepath = os.path.join(settings.PROTECTED_ROOT, obj.media.path)
+            guessed_type = guess_type(filepath)[0]
+            wrapper = FileWrapper(open(filepath, 'rb'))
+            # mimetype = 'application/force-download'
+            # if guessed_type:
+            #     mimetype = guessed_type
+            mimetype = guessed_type if guessed_type else 'application/force-download'
+            responce = HttpResponse(wrapper, content_type=mimetype)
+            if not request.GET.get('preview'):
+                responce["Content-Disposition"] = f"attachment; filename={obj.media.name}"
+            #responce["Content-Disposition"] = f"attachment; filename={obj.media.name}"
+            responce["X-SendFile"] = str(obj.media.name)
+            return responce
+        else:
+            raise Http404
 
 
 
 class ProductListView(ListView):
     model = Product
+    def get_queryset(self):
+        qs = super(ProductListView, self).get_queryset()
+        query = self.request.GET.get('q')
+        if query:
+            qs = qs.filter(
+                Q(title__icontains = query)|
+                Q(description__icontains = query)
+            )
+        return qs
+
 
 def create_view(request):
     if request.method == "POST":

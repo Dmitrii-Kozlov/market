@@ -5,9 +5,13 @@
 <span />
 <h5>{{object.price}}</h5>
 
+{% for img in object.thumbnail_set.all %}
+<img src="{{img.media.url}}" />
+{% endfor %}
+
 {% if request.user.is_authenticated and object.media and object in request.user.myproducts.products.all%}
-<a href="{{ object.get_download }}">Download</a>
-<a href="{{ object.get_download }}?preview=True">Preview</a>
+<p><a href="{{ object.get_download }}">Download</a></p>
+<p><a href="{{ object.get_download }}?preview=True">Preview</a></p>
 
 {% endif %}
 <p>

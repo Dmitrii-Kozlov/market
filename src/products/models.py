@@ -88,6 +88,28 @@ import random
 
 from django.core.files import File
 
+def create_thumb(media_path, instance, owner_slug, max_length, max_width):
+    filename = os.path.basename(media_path)
+    thumb = Image.open(media_path)
+    size = (max_length, max_width)
+    thumb.thumbnail(size, Image.ANTIALIAS)
+    temp_loc = os.path.join(settings.MEDIA_ROOT, owner_slug, 'tmp')
+    if not os.path.exists(temp_loc):
+        os.makedirs(temp_loc)
+    temp_file_path = os.path.join(temp_loc, filename)
+    if os.path.exists(temp_file_path):
+        temp_path = os.path.join(temp_loc, f"{random.random()}")
+        os.makedirs(temp_path)
+        temp_file_path = os.path.join(temp_path, filename)
+
+    temp_image = open(temp_file_path, "wb")
+    thumb.save(temp_image)
+    thumb_data = open(temp_file_path, "rb")
+
+    thumb_file = File(thumb_data)
+    instance.media.save(filename, thumb_file)
+    shutil.rmtree(temp_loc, ignore_errors=True)
+    return True
 
 def product_post_save_receiver(sender, instance, created, *args, **kwargs):
     if instance.media:
@@ -98,66 +120,35 @@ def product_post_save_receiver(sender, instance, created, *args, **kwargs):
         hd_max = (400, 400)
         sd_max = (200, 200)
         micro_max = (50, 50)
-
+        media_path = instance.media.path
+        owner_slug = instance.slug
         if hd_created:
-            filename = os.path.basename(instance.media.path)
-            thumb = Image.open(instance.media.path)
-            thumb.thumbnail(hd_max, Image.ANTIALIAS)
-            temp_loc = os.path.join(settings.MEDIA_ROOT, instance.slug, 'tmp')
-            if not os.path.exists(temp_loc):
-                os.makedirs(temp_loc)
-            temp_file_path = os.path.join(temp_loc, filename)
-            if os.path.exists(temp_file_path):
-                temp_path = os.path.join(temp_loc, f"{random.random()}")
-                os.makedirs(temp_path)
-                temp_file_path = os.path.join(temp_path, filename)
-
-            temp_image = open(temp_file_path, "wb")
-            thumb.save(temp_image)
-            thumb_data = open(temp_file_path, "rb")
-
-            thumb_file = File(thumb_data)
-            hd.media.save(filename, thumb_file)
+            create_thumb(media_path, hd, owner_slug, *hd_max)
+            #
+            # filename = os.path.basename(instance.media.path)
+            # thumb = Image.open(instance.media.path)
+            # thumb.thumbnail(hd_max, Image.ANTIALIAS)
+            # temp_loc = os.path.join(settings.MEDIA_ROOT, instance.slug, 'tmp')
+            # if not os.path.exists(temp_loc):
+            #     os.makedirs(temp_loc)
+            # temp_file_path = os.path.join(temp_loc, filename)
+            # if os.path.exists(temp_file_path):
+            #     temp_path = os.path.join(temp_loc, f"{random.random()}")
+            #     os.makedirs(temp_path)
+            #     temp_file_path = os.path.join(temp_path, filename)
+            #
+            # temp_image = open(temp_file_path, "wb")
+            # thumb.save(temp_image)
+            # thumb_data = open(temp_file_path, "rb")
+            #
+            # thumb_file = File(thumb_data)
+            # hd.media.save(filename, thumb_file)
 
         if sd_created:
-            filename = os.path.basename(instance.media.path)
-            thumb = Image.open(instance.media.path)
-            thumb.thumbnail(sd_max, Image.ANTIALIAS)
-            temp_loc = os.path.join(settings.MEDIA_ROOT, instance.slug, 'tmp')
-            if not os.path.exists(temp_loc):
-                os.makedirs(temp_loc)
-            temp_file_path = os.path.join(temp_loc, filename)
-            if os.path.exists(temp_file_path):
-                temp_path = os.path.join(temp_loc, f"{random.random()}")
-                os.makedirs(temp_path)
-                temp_file_path = os.path.join(temp_path, filename)
-
-            temp_image = open(temp_file_path, "wb")
-            thumb.save(temp_image)
-            thumb_data = open(temp_file_path, "rb")
-
-            thumb_file = File(thumb_data)
-            sd.media.save(filename, thumb_file)
+            create_thumb(media_path, sd, owner_slug, *sd_max)
 
         if micro_created:
-            filename = os.path.basename(instance.media.path)
-            thumb = Image.open(instance.media.path)
-            thumb.thumbnail(micro_max, Image.ANTIALIAS)
-            temp_loc = os.path.join(settings.MEDIA_ROOT, instance.slug, 'tmp')
-            if not os.path.exists(temp_loc):
-                os.makedirs(temp_loc)
-            temp_file_path = os.path.join(temp_loc, filename)
-            if os.path.exists(temp_file_path):
-                temp_path = os.path.join(temp_loc, f"{random.random()}")
-                os.makedirs(temp_path)
-                temp_file_path = os.path.join(temp_path, filename)
-
-            temp_image = open(temp_file_path, "wb")
-            thumb.save(temp_image)
-            thumb_data = open(temp_file_path, "rb")
-
-            thumb_file = File(thumb_data)
-            micro.media.save(filename, thumb_file)
+            create_thumb(media_path, micro, owner_slug, *micro_max)
 
     # shutil.rmtree(temp_loc, ignore_errors=True)
 

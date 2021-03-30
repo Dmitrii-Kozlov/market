@@ -12,6 +12,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from .models import Product
+from tags.models import Tag
 from .forms import ProductAddForm, ProductModelForm
 # Create your views here.
 
@@ -21,6 +22,12 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ProductModelForm
     success_url = reverse_lazy('products:list')
 
+    def get_initial(self):
+        initial = super(ProductUpdateView, self).get_initial()
+        tags = self.get_object().tag_set.all()
+        initial['tags'] = ', '.join([x.title for x in tags])
+        return initial
+
     def get_object(self, queryset=None):
         user = self.request.user
         obj = super(ProductUpdateView, self).get_object()
@@ -28,6 +35,17 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
             return obj
         else:
             raise Http404
+
+    def form_valid(self, form):
+        valid_data = super(ProductUpdateView, self).form_valid(form)
+        print(form.cleaned_data)
+        tags = form.cleaned_data.get('tags')
+        if tags:
+            tag_list = tags.split(',')
+            for tag in tag_list:
+                new_tag = Tag.objects.get_or_create(title=str(tag).strip())[0]
+                new_tag.products.add(self.get_object())
+        return valid_data
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product

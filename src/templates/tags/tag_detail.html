@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% load get_thumbnail %}
 
 {% block content %}
 <h2>Products</h2>
     <ul>
         {% for product_instance in object.products.all %}
             <li><a href={{ product_instance.get_absolute_url }}>
-                <img src="{{ product_instance.thumbnail_set.all.first.media.url }}"></a>
+                <img src="{{ product_instance|get_thumbnail:'micro' }}"></a>
 
         {% empty %}
         <h3>No Products yet</h3>

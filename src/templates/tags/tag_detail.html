@@ -1,4 +1,14 @@
 {% extends "base.html" %}
+
 {% block content %}
-Coming soon...
+<h2>Products</h2>
+    <ul>
+        {% for product_instance in object.products.all %}
+            <li><a href={{ product_instance.get_absolute_url }}>
+                <img src="{{ product_instance.thumbnail_set.all.first.media.url }}"></a>
+
+        {% empty %}
+        <h3>No Products yet</h3>
+        {% endfor %}
+    </ul>
 {% endblock %}

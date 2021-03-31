@@ -11,6 +11,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
+from analytics.models import TagView
 from .models import Product
 from tags.models import Tag
 from .forms import ProductAddForm, ProductModelForm
@@ -72,6 +73,19 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 
 class ProductDetailView(DetailView):
     model = Product
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductDetailView, self).get_context_data(**kwargs)
+        obj = self.get_object()
+        tags = obj.tag_set.all()
+        for tag in tags:
+            new_view = TagView.objects.get_or_create(
+                user=self.request.user,
+                tag=tag
+            )[0]
+            new_view.count += 1
+            new_view.save()
+        return context
 
 class ProductDownloadView(DetailView):
     model = Product

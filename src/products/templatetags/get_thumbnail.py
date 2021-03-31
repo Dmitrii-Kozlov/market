@@ -10,5 +10,7 @@ def get_thumbnail(obj, arg):
     choises = dict(THUMB_CHOICES)
     if not choises.get(arg):
         raise TypeError(f"{arg} is not valid type for this model")
-
-    return obj.thumbnail_set.filter(type=arg).first().media.url
+    try:
+        return obj.thumbnail_set.filter(type=arg).first().media.url
+    except:
+        return None

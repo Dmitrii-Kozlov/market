@@ -79,12 +79,7 @@ class ProductDetailView(DetailView):
         obj = self.get_object()
         tags = obj.tag_set.all()
         for tag in tags:
-            new_view = TagView.objects.get_or_create(
-                user=self.request.user,
-                tag=tag
-            )[0]
-            new_view.count += 1
-            new_view.save()
+            TagView.objects.add_count(user=self.request.user, tag=tag)
         return context
 
 class ProductDownloadView(DetailView):

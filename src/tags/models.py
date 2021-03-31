@@ -6,11 +6,17 @@ from django.utils.text import slugify
 from products.models import Product
 # Create your models here.
 
+class TagManager(models.Manager):
+    def all(self, *args, **kwargs):
+        return super(TagManager, self).all(*args, **kwargs).filter(active=True)
+
 class Tag(models.Model):
     title = models.CharField(max_length=120, unique=True)
     slug = models.SlugField(unique=True)
     products = models.ManyToManyField(Product, blank=True)
     active = models.BooleanField(default=True)
+
+    objects = TagManager()
 
     def __str__(self):
         return str(self.title)

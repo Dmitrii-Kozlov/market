@@ -4,4 +4,22 @@ h2 {
 .main-content {
     width: 800px;
     margin: 0 auto;
+    clear: both;
+}
+.main-nav {
+    width: 800px;
+    margin: 10px auto;
+}
+.main-nav li {
+    display: inline;
+}
+.pull-left {
+    float: left;
+}
+.pull-right {
+    float: right;
+}
+
+.first-nav {
+    padding-left: 0px;
 }

@@ -1,0 +1,12 @@
+{% load get_thumbnail %}
+{% for product in product_list %}
+    <li><a href={{ product.get_absolute_url }}> {{ product.title }}</a> <br>
+<!--        {% if product|get_thumbnail:'micro' %}-->
+        <a href={{ product.get_absolute_url }}>
+            <img src="{{ product|get_thumbnail:'micro' }}">
+        </a><br>
+<!--        {% endif %}-->
+        Price: {{ product.price }}</li>
+{% empty %}
+<h3>No Products yet</h3>
+{% endfor %}

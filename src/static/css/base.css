@@ -23,3 +23,30 @@ h2 {
 .first-nav {
     padding-left: 0px;
 }
+
+.col-primary {
+    width: 85%;
+}
+
+.col-sidebar {
+    width: 15%;
+    padding-top: 50px;
+}
+
+.clearfix {
+    clear:both;
+}
+
+button.buy-btn {
+    border: 1px solid #DA5B00 !important;
+    background: #DA5B00 !important;
+}
+
+button.buy-btn .ui-button-text {
+    color: #ffffff;
+}
+
+.ui-widget-header {
+    border: 1px solid #ffffff !important;
+    background: #ffffff !important;
+}

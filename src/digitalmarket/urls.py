@@ -18,12 +18,13 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from checkout.views import CheckoutTestView
+from checkout.views import CheckoutTestView, CheckoutAjaxView
 from dashboard.views import DashboardView
 
 urlpatterns = [
     path('', DashboardView.as_view(), name='dashboard'),
     path('test/', CheckoutTestView.as_view(), name='test'),
+    path('checkout/', CheckoutAjaxView.as_view(), name='checkout'),
     path('admin/', admin.site.urls),
     path('products/', include('products.urls', namespace='products')),
     path('tags/', include('tags.urls', namespace='tags')),

@@ -16,6 +16,26 @@
                             id: "close",
                             text: "Confirm",
                             click: function () {
+                                    var request = $.ajax({
+                                                    method: "POST",
+                                                    url: "{% url 'checkout' %}",
+                                                    data: {
+                                                        product_id: "{{ object.id }}",
+                                                    },
+                                                })
+                                    request.done(function (data) {
+                                        console.log("working...")
+                                        // if (data.works) {
+                                        //     $("#content").html(data.time)
+                                        // }
+                                    })
+                                    request.fail(function (jqXHR, textStatus) {
+                                        if (jqXHR.status == 404) {
+                                            alert("Page not found!")
+                                        } else {
+                                            alert("There was an error with your request. Please, try again.")
+                                        }
+                                    })
                                 $( this ).dialog( "close" );
                             },
                             class: "buy-btn"

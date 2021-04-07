@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+
+success: function (data, textStatus, jqXHR) {
+                    console.log(data.works)
+                    if (data.works) {
+                        $("#content").html("New content: " + data.time)
+                    }
+                    // console.log(textStatus)
+                    // console.log(jqXHR)
+
+                },
+                error: function (textStatus, jqXHR, errorThrown) {
+                    console.log(errorThrown)
+                    console.log(textStatus)
+                    console.log(jqXHR)
+                }
+
+<script>
+    $(document).ready(function () {
+        {% block jquery %}
+        $("#test-call").click(function (event) {
+            event.preventDefault()
+            // $("#content").html("Hello There!")
+            var request = $.ajax({
+                method: "POST",
+                url: "{% url 'test' %}",
+                data: {
+                    testData: "Hello new data!",
+                },
+            })
+            request.done(function (data) {
+                if (data.works) {
+                    $("#content").html(data.time)
+                }
+            })
+            request.fail(function (jqXHR, textStatus) {
+                if (jqXHR.status == 404) {
+                    alert("Page not found!")
+                } else {
+                    alert("There was an error with your request. Please, try again.")
+                }
+            })
+        })
+        {% endblock %}
+    })
+</script>
+
+
+{% block content %}
+
+<a id="test-call" href="sdfsfsf">Test AJAX</a>
+
+<div id="content"></div>
+
+{% endblock %}

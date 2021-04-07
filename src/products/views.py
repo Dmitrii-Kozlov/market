@@ -78,8 +78,9 @@ class ProductDetailView(DetailView):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
         obj = self.get_object()
         tags = obj.tag_set.all()
-        for tag in tags:
-            TagView.objects.add_count(user=self.request.user, tag=tag)
+        if self.request.user.is_authenticated:
+            for tag in tags:
+                TagView.objects.add_count(user=self.request.user, tag=tag)
         return context
 
 class ProductDownloadView(DetailView):

@@ -5,6 +5,7 @@
         {% block jquery %}
         $("#purchase-btn").click(function (event) {
             event.preventDefault()
+            var purchaseBtn = $(this)
             $("#dialog-purchase").fadeIn("300")
             $("#dialog-purchase").dialog({
                 resizable: false,
@@ -24,7 +25,9 @@
                                                     },
                                                 })
                                     request.done(function (data) {
-                                        console.log("working...")
+                                        purchaseBtn.before("<p><a href='" + data.download + "'>Download</a></p><p><a href='" + data.preview + "'>Preview</a></p>")
+                                        purchaseBtn.fadeOut(100)
+                                        // console.log("working...")
                                         // if (data.works) {
                                         //     $("#content").html(data.time)
                                         // }

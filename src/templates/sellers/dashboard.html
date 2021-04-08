@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Seller Dashboard</h1>
+<!--<h1>Seller Dashboard</h1>-->
+<h1>{{ title }}</h1>
+{% if apply_form %}
 Rules of use
 <form method="post" action=""> {% csrf_token %}
 <ol>
@@ -12,7 +14,8 @@ Rules of use
         Don't steal
     </li>
 </ol>
-    {{ form }}
+    {{ apply_form }}
     <button type="submit">Submit</button>
 </form>
+{% endif %}
 {% endblock %}

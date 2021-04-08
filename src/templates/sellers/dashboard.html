@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Seller Dashboard</h1>
+Rules of use
+<form method="post" action=""> {% csrf_token %}
+<ol>
+    <li>
+        Be kind
+    </li>
+    <li>
+        Don't steal
+    </li>
+</ol>
+    {{ form }}
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}

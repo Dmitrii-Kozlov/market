@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'tags',
     'analytics',
     'dashboard',
-    'sellers'
+    'sellers',
+    'billing'
 ]
 
 MIDDLEWARE = [

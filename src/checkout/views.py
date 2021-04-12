@@ -5,6 +5,7 @@ from django.http import HttpResponse, JsonResponse, Http404
 from django.views import View
 from digitalmarket.mixins import AjaxRequiredMixin
 from products.models import Product, MyProducts
+from billing.models import Transaction
 
 class CheckoutAjaxView(AjaxRequiredMixin, View):
     def post(self, request):
@@ -19,6 +20,11 @@ class CheckoutAjaxView(AjaxRequiredMixin, View):
             product_obj = Product.objects.get(id=product_id)
         except:
             product_obj = Product.objects.filter(id=product_id).first()
+
+        transaction_obj = Transaction.objects.create(user=request.user,
+                                                     product=product_obj,
+                                                     price=product_obj.price)
+
         my_products = MyProducts.objects.get_or_create(user=user)[0]
         my_products.products.add(product_obj)
         download_link = product_obj.get_download()

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Transactions</h2>
+
+    <ul>
+    {% include "sellers/transaction_list.html" with transaction_list=object_list %}
+    </ul>
+
+{% endblock %}

@@ -3,12 +3,26 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.views import View
+from django.views.generic import ListView
 from django.views.generic.edit import FormMixin
 
 from .forms import NewSellerForm
 from .models import SellerAccount
 from products.models import Product
 from billing.models import Transaction
+
+
+class SellerTransactionListView(ListView):
+    model = Transaction
+    template_name = "sellers/transaction_list_view.html"
+
+    def get_queryset(self):
+        account = SellerAccount.objects.filter(user=self.request.user)
+        if account.exists():
+            account = account.first()
+            products = Product.objects.filter(seller=account)
+            return Transaction.objects.filter(product__in=products)
+        return []
 
 class SellerDashboard(LoginRequiredMixin, FormMixin, View):
     form_class = NewSellerForm
@@ -39,7 +53,7 @@ class SellerDashboard(LoginRequiredMixin, FormMixin, View):
             context["title"] = "Seller Dashboard"
             products = Product.objects.filter(seller=account)
             context["products"] = products
-            context["transactions"] = Transaction.objects.filter(product__in=products)
+            context["transactions"] = Transaction.objects.filter(product__in=products)[:6]
 
         return render(request, "sellers/dashboard.html", context)
 

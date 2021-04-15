@@ -10,14 +10,6 @@
 </p>
     <ul>
         {% include "products/product_list_snippet.html" with product_list=object_list %}
-
-<!--        {% for product in object_list %}-->
-<!--            <li><a href={{ product.get_absolute_url }}> {{ product.title }}</a> <br>-->
-<!--                {{ product.description|truncatewords:5 }} <br>-->
-<!--                {{ product.price }}</li>-->
-<!--        {% empty %}-->
-<!--        <h3>No Products yet</h3>-->
-<!--        {% endfor %}-->
     </ul>
 <a href="{% url 'products:create' %}">Add product</a>
 {% endblock %}

@@ -1,0 +1,308 @@
+[
+{
+    "model": "products.product",
+    "pk": 44,
+    "fields": {
+        "seller": 4,
+        "media": "title-django-37/37_django2.jpeg",
+        "title": "title django 37",
+        "slug": "title-django-37",
+        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce vitae mi at mauris dignissim dictum ac at eros. Nam vel viverra ex. Aenean lobortis iaculis quam quis sollicitudin. Donec pretium, mauris sit amet volutpat tincidunt, lacus tortor molestie lacus, vitae luctus tortor mi ac turpis. Nam a dapibus elit, at porta ligula. Nulla sollicitudin eu magna a bibendum. Suspendisse eu urna pretium, pretium eros at, egestas ex. Praesent facilisis scelerisque urna. Suspendisse eu nibh aliquam, vestibulum purus vitae, posuere neque. Morbi et velit leo. Vivamus at nisl id justo viverra maximus id placerat ante. Duis consectetur, ipsum eu varius lacinia, arcu diam scelerisque leo, vel fringilla mi enim a dui. Aenean sed lobortis dui, nec luctus eros.",
+        "price": "9.99"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 45,
+    "fields": {
+        "seller": 4,
+        "media": "title-django-2/django2.jpeg",
+        "title": "title django 2",
+        "slug": "title-django-2",
+        "description": "Curabitur odio leo, convallis non augue ut, vestibulum tincidunt purus. Fusce ac dignissim ex, vel rhoncus sapien. Curabitur semper maximus turpis. Donec quis dignissim sem. Morbi ornare molestie lobortis. Cras imperdiet feugiat felis, convallis elementum turpis interdum sit amet. Proin ac ex eget ipsum fringilla finibus non non nulla. Interdum et malesuada fames ac ante ipsum primis in faucibus. In sodales nec eros nec ornare. Donec sed quam tellus. Aliquam sit amet nisi eu urna laoreet consequat.",
+        "price": "9.99"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 46,
+    "fields": {
+        "seller": 4,
+        "media": "title-django/django.jpeg",
+        "title": "title django",
+        "slug": "title-django",
+        "description": "Vestibulum non lacus rhoncus, molestie nisi quis, eleifend nulla. Phasellus aliquam diam maximus dolor ornare sodales. Praesent a sapien et eros euismod dignissim id elementum mi. Sed efficitur leo sed arcu molestie dignissim. Mauris at vulputate nisl, et tincidunt dolor. Pellentesque vehicula quam vel lacus elementum interdum. Sed ultrices arcu ac turpis vulputate varius. Nulla at ligula rhoncus, tempus sapien non, auctor mauris. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Cras vitae hendrerit odio. Nulla nec varius sem, non dictum ex. Curabitur eget nisi faucibus nisi iaculis molestie. Sed sollicitudin porttitor varius.",
+        "price": "19.99"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 47,
+    "fields": {
+        "seller": 4,
+        "media": "title-test-django/37_django2.jpeg",
+        "title": "title test django",
+        "slug": "title-test-django",
+        "description": "Proin porttitor est ac risus dapibus fringilla. Phasellus ac suscipit eros. Maecenas diam sem, finibus sit amet vestibulum tincidunt, fringilla vitae urna. Sed et nulla elit. Etiam rutrum, neque maximus elementum mollis, tellus purus egestas risus, ac luctus erat mauris ut ligula. Phasellus ut hendrerit nibh, ut interdum lectus. Quisque aliquet efficitur venenatis. Quisque in pulvinar sapien. Vestibulum ut enim nisl. Etiam ac interdum leo, ullamcorper vestibulum nibh. Nulla euismod luctus tortor, id vestibulum erat dictum vel. Curabitur sed consequat felis. Duis rutrum felis ut maximus facilisis.",
+        "price": "39.99"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 48,
+    "fields": {
+        "seller": 4,
+        "media": "",
+        "title": "rat",
+        "slug": "rat",
+        "description": "new description for rat",
+        "price": "19.99"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 49,
+    "fields": {
+        "seller": 4,
+        "media": "hello/red_tea.jpeg",
+        "title": "Hello",
+        "slug": "hello",
+        "description": "Quisque neque elit, aliquet sit amet leo ac, lacinia dapibus ligula. Nunc ultrices dui arcu, eget ultrices erat cursus vitae. Maecenas condimentum vitae lectus quis condimentum. Fusce convallis sodales diam vitae lobortis. Sed ut dapibus turpis, ut porttitor nibh. Aliquam sit amet elit urna. Morbi a sapien ultricies, vehicula urna et, ultrices justo. Etiam malesuada nulla urna, vitae lobortis tortor consectetur at. Quisque pharetra, odio eget hendrerit malesuada, purus augue interdum quam, ac volutpat neque risus molestie diam. Ut mattis aliquet malesuada. Etiam tempor nisi in turpis commodo, a porttitor felis rhoncus. Morbi lorem augue, ultrices eu malesuada ac, pretium id arcu. Pellentesque tempus magna nec tellus pulvinar mattis. Maecenas nec nunc at metus lobortis sodales. Aliquam pretium pulvinar risus, quis imperdiet magna tristique eu. Proin elementum, ligula id facilisis efficitur, libero nulla tempus ante, ultricies venenatis lectus nulla et arcu",
+        "price": "89.99"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 51,
+    "fields": {
+        "seller": 4,
+        "media": "clouds/clouds.jpeg",
+        "title": "clouds",
+        "slug": "clouds",
+        "description": "clouds description",
+        "price": "9.99"
+    }
+},
+{
+    "model": "products.product",
+    "pk": 52,
+    "fields": {
+        "seller": 4,
+        "media": "",
+        "title": "test color",
+        "slug": "test-color",
+        "description": "desc color tags",
+        "price": "9.99"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 34,
+    "fields": {
+        "product": 44,
+        "type": "hd",
+        "height": "230",
+        "width": "219",
+        "media": "title-django-37/37_django2.jpeg"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 35,
+    "fields": {
+        "product": 44,
+        "type": "sd",
+        "height": "200",
+        "width": "190",
+        "media": "title-django-37/37_django2_VFEgmtB.jpeg"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 36,
+    "fields": {
+        "product": 44,
+        "type": "micro",
+        "height": "50",
+        "width": "48",
+        "media": "title-django-37/37_django2_th07Stx.jpeg"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 37,
+    "fields": {
+        "product": 45,
+        "type": "hd",
+        "height": "230",
+        "width": "219",
+        "media": "title-django-2/django2.jpeg"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 38,
+    "fields": {
+        "product": 45,
+        "type": "sd",
+        "height": "200",
+        "width": "190",
+        "media": "title-django-2/django2_2tHjpd6.jpeg"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 39,
+    "fields": {
+        "product": 45,
+        "type": "micro",
+        "height": "50",
+        "width": "48",
+        "media": "title-django-2/django2_kAvWL6e.jpeg"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 40,
+    "fields": {
+        "product": 46,
+        "type": "hd",
+        "height": "225",
+        "width": "225",
+        "media": "title-django/django.jpeg"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 41,
+    "fields": {
+        "product": 46,
+        "type": "sd",
+        "height": "200",
+        "width": "200",
+        "media": "title-django/django_EB9XDfD.jpeg"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 42,
+    "fields": {
+        "product": 46,
+        "type": "micro",
+        "height": "50",
+        "width": "50",
+        "media": "title-django/django_HCRluEz.jpeg"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 43,
+    "fields": {
+        "product": 47,
+        "type": "hd",
+        "height": "230",
+        "width": "219",
+        "media": "title-test-django/37_django2.jpeg"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 44,
+    "fields": {
+        "product": 47,
+        "type": "sd",
+        "height": "200",
+        "width": "190",
+        "media": "title-test-django/37_django2_36jzztf.jpeg"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 45,
+    "fields": {
+        "product": 47,
+        "type": "micro",
+        "height": "50",
+        "width": "48",
+        "media": "title-test-django/37_django2_6qOm2ik.jpeg"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 46,
+    "fields": {
+        "product": 49,
+        "type": "hd",
+        "height": "196",
+        "width": "196",
+        "media": "hello/red_tea.jpeg"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 47,
+    "fields": {
+        "product": 49,
+        "type": "sd",
+        "height": "196",
+        "width": "196",
+        "media": "hello/red_tea_XC713d7.jpeg"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 48,
+    "fields": {
+        "product": 49,
+        "type": "micro",
+        "height": "50",
+        "width": "50",
+        "media": "hello/red_tea_OXAv7Rb.jpeg"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 52,
+    "fields": {
+        "product": 51,
+        "type": "hd",
+        "height": "261",
+        "width": "400",
+        "media": "clouds/clouds.jpeg"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 53,
+    "fields": {
+        "product": 51,
+        "type": "sd",
+        "height": "130",
+        "width": "200",
+        "media": "clouds/clouds_HEoA0FR.jpeg"
+    }
+},
+{
+    "model": "products.thumbnail",
+    "pk": 54,
+    "fields": {
+        "product": 51,
+        "type": "micro",
+        "height": "33",
+        "width": "50",
+        "media": "clouds/clouds_hoNCHKt.jpeg"
+    }
+},
+{
+    "model": "products.myproducts",
+    "pk": 4,
+    "fields": {
+        "user": 1,
+        "products": [
+            45,
+            49,
+            51
+        ]
+    }
+}
+]

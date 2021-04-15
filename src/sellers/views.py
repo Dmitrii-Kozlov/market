@@ -7,6 +7,8 @@ from django.views.generic.edit import FormMixin
 
 from .forms import NewSellerForm
 from .models import SellerAccount
+from products.models import Product
+from billing.models import Transaction
 
 class SellerDashboard(LoginRequiredMixin, FormMixin, View):
     form_class = NewSellerForm
@@ -24,12 +26,6 @@ class SellerDashboard(LoginRequiredMixin, FormMixin, View):
         account = SellerAccount.objects.filter(user=self.request.user)
         exists = account.exists()
         active = None
-        # context = {
-        #     'apply_form': apply_form,
-        #     'account': account,
-        #     'active': active,
-        #     'exists': exists
-        # }
         context = {}
         if exists:
             account = account.first()
@@ -41,6 +37,9 @@ class SellerDashboard(LoginRequiredMixin, FormMixin, View):
             context["title"] = "Account Pending"
         elif exists and active:
             context["title"] = "Seller Dashboard"
+            products = Product.objects.filter(seller=account)
+            context["products"] = products
+            context["transactions"] = Transaction.objects.filter(product__in=products)
 
         return render(request, "sellers/dashboard.html", context)
 

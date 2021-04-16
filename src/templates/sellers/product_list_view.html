@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load get_thumbnail %}
+
+
+{% block content %}
+<h2>My Seller Products</h2>
+<p>
+    <form method="get" action="">
+    <input type="text" name="q" placeholder="search">
+    <input type="submit" value="Search">
+</form>
+</p>
+    <table>
+
+{% for product in object_list %}
+    <tr>
+        <td>
+            {{product.id}}
+        </td>
+        <td>
+            <a href={{ product.get_absolute_url }}> {{ product.title }}</a>
+        </td>
+        <td>
+            <a href={{ product.get_absolute_url }}>
+            <img src="{{ product|get_thumbnail:'micro' }}">
+        </a>
+        </td>
+        <td>
+            Price: {{ product.price }}
+        </td>
+        <td>
+            <a href="{{product.get_edit_url}}">Edit</a> | <a href="#">Delete</a>
+        </td>
+    </tr>
+{% empty %}
+<h3>No Products yet</h3>
+{% endfor %}
+
+    </table>
+{% endblock %}

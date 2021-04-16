@@ -10,21 +10,32 @@ from .forms import NewSellerForm
 from .models import SellerAccount
 from products.models import Product
 from billing.models import Transaction
+from .mixin import SellerAccounMixin
+
+from django.shortcuts import get_object_or_404
+from django.views.generic.base import RedirectView
+
+class SellerProductDetailRedirectView(RedirectView):
+    permanent = True
+    def get_redirect_url(self, *args, **kwargs):
+        obj = get_object_or_404(Product, slug=kwargs['slug'])
+        return obj.get_absolute_url()
 
 
-class SellerTransactionListView(ListView):
+class SellerTransactionListView(SellerAccounMixin, ListView):
     model = Transaction
     template_name = "sellers/transaction_list_view.html"
 
     def get_queryset(self):
-        account = SellerAccount.objects.filter(user=self.request.user)
-        if account.exists():
-            account = account.first()
-            products = Product.objects.filter(seller=account)
-            return Transaction.objects.filter(product__in=products)
-        return []
+        return self.get_transaction()
+        # account = SellerAccount.objects.filter(user=self.request.user)
+        # if account.exists():
+        #     account = account.first()
+        #     products = Product.objects.filter(seller=account)
+        #     return Transaction.objects.filter(product__in=products)
+        # return []
 
-class SellerDashboard(LoginRequiredMixin, FormMixin, View):
+class SellerDashboard(SellerAccounMixin, FormMixin, View):
     form_class = NewSellerForm
     success_url = "/seller/"
 
@@ -37,23 +48,22 @@ class SellerDashboard(LoginRequiredMixin, FormMixin, View):
 
     def get(self, request, *args, **kwargs):
         apply_form = self.get_form()
-        account = SellerAccount.objects.filter(user=self.request.user)
-        exists = account.exists()
+        account = self.get_account()
+        exists = account
         active = None
         context = {}
-        if exists:
-            account = account.first()
+        if account:
             active = account.active
-        if not exists and not active:
+        if not account and not active:
             context["title"] = "Apply this form"
             context["apply_form"] = apply_form
-        elif exists and not active:
+        elif account and not active:
             context["title"] = "Account Pending"
-        elif exists and active:
+        elif account and active:
             context["title"] = "Seller Dashboard"
-            products = Product.objects.filter(seller=account)
-            context["products"] = products
-            context["transactions"] = Transaction.objects.filter(product__in=products)[:6]
+            # products = Product.objects.filter(seller=account)
+            context["products"] = self.get_products()
+            context["transactions"] = self.get_transaction()[:5]
 
         return render(request, "sellers/dashboard.html", context)
 

@@ -11,13 +11,15 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
+from .mixin import ProductManagerMixin
+from sellers.mixin import SellerAccounMixin
 from analytics.models import TagView
 from .models import Product
 from tags.models import Tag
 from .forms import ProductAddForm, ProductModelForm
 # Create your views here.
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(ProductManagerMixin, UpdateView):
     model = Product
     template_name = 'update_view.html'
     form_class = ProductModelForm
@@ -29,13 +31,14 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         initial['tags'] = ', '.join([x.title for x in tags])
         return initial
 
-    def get_object(self, queryset=None):
-        user = self.request.user
-        obj = super(ProductUpdateView, self).get_object()
-        if obj.user == user or user in obj.managers.all():
-            return obj
-        else:
-            raise Http404
+    # def get_object(self, queryset=None):
+    #     user = self.request.user
+    #     obj = super(ProductUpdateView, self).get_object()
+    #     if obj.seller == user:
+    #     #if obj.user == user or user in obj.managers.all():
+    #         return obj
+    #     else:
+    #         raise Http404
 
     def form_valid(self, form):
         valid_data = super(ProductUpdateView, self).form_valid(form)
@@ -51,17 +54,18 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
                     new_tag.products.add(self.get_object())
         return valid_data
 
-class ProductCreateView(LoginRequiredMixin, CreateView):
+class ProductCreateView(SellerAccounMixin, CreateView):
     model = Product
     template_name = 'create_view.html'
     form_class = ProductModelForm
-    success_url = reverse_lazy('products:list')
+    # success_url = reverse_lazy('products:list')
 
     def form_valid(self, form):
-        user = self.request.user
-        form.instance.user = user
+        # user = self.request.user
+        # form.instance.user = user
+        seller = self.get_account()
+        form.instance.seller = seller
         valid_data = super(ProductCreateView, self).form_valid(form)
-        form.instance.managers.add(user)
         tags = form.cleaned_data.get('tags')
         if tags:
             tag_list = tags.split(',')
@@ -103,6 +107,21 @@ class ProductDownloadView(DetailView):
             return responce
         else:
             raise Http404
+
+
+class SellerProductListView(SellerAccounMixin, ListView):
+    model = Product
+    template_name = "sellers/product_list_view.html"
+    def get_queryset(self):
+        qs = super(SellerProductListView, self).get_queryset()
+        qs = qs.filter(seller=self.get_account())
+        query = self.request.GET.get('q')
+        if query:
+            qs = qs.filter(
+                Q(title__icontains = query)|
+                Q(description__icontains = query)
+            )
+        return qs
 
 
 

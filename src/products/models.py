@@ -32,6 +32,10 @@ class Product(models.Model):
         view_name = "products:detail"
         return reverse(view_name, kwargs={"slug": self.slug})
 
+    def get_edit_url(self):
+        view_name = "sellers:product_update"
+        return reverse(view_name, kwargs={"slug": self.slug})
+
     def get_download(self):
         view_name = "products:download"
         url = reverse(view_name, kwargs={"slug": self.slug})

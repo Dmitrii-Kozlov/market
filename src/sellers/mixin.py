@@ -1,4 +1,7 @@
+import datetime
+
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Sum
 
 from billing.models import Transaction
 from products.models import Product
@@ -29,3 +32,16 @@ class SellerAccounMixin(LoginRequiredMixin, object):
         self.transactions = transactions
         return transactions
 
+    def get_transactions_today(self):
+        today = datetime.date.today()
+        today_min = datetime.datetime.combine(today, datetime.time.min)
+        today_max = datetime.datetime.combine(today, datetime.time.max)
+        return self.get_transaction().filter(timestamp__range=(today_min, today_max))
+
+    def get_total_sales(self):
+        total = self.get_transaction().aggregate(Sum("price"))
+        return total["price__sum"]
+
+    def get_today_sales(self):
+        total = self.get_transactions_today().aggregate(Sum("price"))
+        return total["price__sum"]

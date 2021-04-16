@@ -64,6 +64,9 @@
 <p>{{object.description}}</p>
 <span />
 <h5>{{object.price}}</h5>
+    <p>
+    Purchase: {{object.transaction_set.count }}
+    </p>
 
     {% for img in object.thumbnail_set.all %}
     <img src="{{img.media.url}}" />

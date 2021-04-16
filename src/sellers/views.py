@@ -1,6 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
-
 # Create your views here.
 from django.views import View
 from django.views.generic import ListView
@@ -49,7 +48,6 @@ class SellerDashboard(SellerAccounMixin, FormMixin, View):
     def get(self, request, *args, **kwargs):
         apply_form = self.get_form()
         account = self.get_account()
-        exists = account
         active = None
         context = {}
         if account:
@@ -61,9 +59,12 @@ class SellerDashboard(SellerAccounMixin, FormMixin, View):
             context["title"] = "Account Pending"
         elif account and active:
             context["title"] = "Seller Dashboard"
-            # products = Product.objects.filter(seller=account)
+            transactions_today = self.get_transactions_today()
+            context["transactions_today"] = transactions_today
+            context["today_sales"] = self.get_today_sales()
+            context["total_sales"] = self.get_total_sales()
             context["products"] = self.get_products()
-            context["transactions"] = self.get_transaction()[:5]
+            context["transactions"] = self.get_transaction().exclude(pk__in=transactions_today)[:5]
 
         return render(request, "sellers/dashboard.html", context)
 

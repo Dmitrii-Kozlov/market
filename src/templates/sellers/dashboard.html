@@ -22,13 +22,23 @@
 
 {% if products %}
 <div class="pull-right col-sidebar">
+    <h4>My Products<br><small>
+        <a href="{% url 'sellers:product_create' %}">Add</a> | <a href="{% url 'sellers:product_list' %}">All</a>
+    </small></h4>
 {% include "products/product_list_snippet.html" with product_list=products %}
 </div>
 {% endif %}
 
 {% if transactions %}
 <div class="pull-left col-primary">
+    <h3>Today's sales ({{ today_sales }}$)</h3>
+    {% include "sellers/transaction_list.html" with transaction_list=transactions_today %}
+    <br>
+    <h3>Recent transaction history (Total:{{total_sales}}$)</h3>
 {% include "sellers/transaction_list.html" with transaction_list=transactions %}
+    <p>
+        <a href="{% url 'sellers:transactions' %}">View all transactions</a>
+    </p>
 </div>
 {% endif %}
 

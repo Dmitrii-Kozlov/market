@@ -174,3 +174,12 @@ class MyProducts(models.Model):
     class Meta:
         verbose_name = "My Products"
         verbose_name_plural = "My Products"
+
+class ProductRating(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    rating = models.IntegerField(null=True, blank=True)
+    verified = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.rating}"

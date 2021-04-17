@@ -5,19 +5,57 @@ from wsgiref.util import FileWrapper
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import IntegrityError
-from django.db.models import Q
-from django.http import HttpResponseRedirect, Http404, HttpResponse
+from django.db.models import Q, Avg, Count
+from django.http import HttpResponseRedirect, Http404, HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
+from digitalmarket.mixins import AjaxRequiredMixin
 from .mixin import ProductManagerMixin
 from sellers.mixin import SellerAccounMixin
 from analytics.models import TagView
-from .models import Product
+from .models import Product, ProductRating
 from tags.models import Tag
 from .forms import ProductAddForm, ProductModelForm
 # Create your views here.
+
+class ProductRatingAjaxView(AjaxRequiredMixin, View):
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return JsonResponse({}, status=401)
+        user = request.user
+        product_id = request.POST.get("product_id")
+        rating_value = request.POST.get("rating_value")
+        exist = Product.objects.filter(id=product_id).exists()
+        if not exist:
+            return JsonResponse({}, status=404)
+        try:
+            product_obj = Product.objects.get(id=product_id)
+        except:
+            product_obj = Product.objects.filter(id=product_id).first()
+
+        rating_obj, rating_obj_created = ProductRating.objects.get_or_create(user=user, product=product_obj)
+
+        try:
+            rating_obj = ProductRating.objects.get(user=user, product=product_obj)
+        except ProductRating.MultipleObjectsReturned:
+            rating_obj = ProductRating.objects.filter(user=user, product=product_obj).first()
+        except:
+            rating_obj = ProductRating.objects.create(user=user, product=product_obj)
+
+        rating_obj.rating = int(rating_value)
+        myproducts = user.myproducts.products.all()
+        if product_obj in myproducts:
+            rating_obj.verified = True
+        rating_obj.save()
+
+        data = {
+            "success": True
+        }
+        return JsonResponse(data)
+
 
 class ProductUpdateView(ProductManagerMixin, UpdateView):
     model = Product
@@ -82,7 +120,12 @@ class ProductDetailView(DetailView):
         context = super(ProductDetailView, self).get_context_data(**kwargs)
         obj = self.get_object()
         tags = obj.tag_set.all()
+        rating_avg = obj.productrating_set.aggregate(Avg("rating"), Count("rating"))
+        context["rating_avg"] = rating_avg
         if self.request.user.is_authenticated:
+            rating_obj = ProductRating.objects.filter(user=self.request.user, product=obj)
+            if rating_obj.exists():
+                context["my_rating"] = rating_obj.first().rating
             for tag in tags:
                 TagView.objects.add_count(user=self.request.user, tag=tag)
         return context

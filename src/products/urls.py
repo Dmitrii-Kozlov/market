@@ -1,6 +1,7 @@
 from django.urls import path, include
 from .views import (detail_view, list_view, create_view, update_view,
-                    ProductListView, ProductDetailView, ProductCreateView, ProductUpdateView, ProductDownloadView)
+                    ProductListView, ProductDetailView, ProductCreateView,
+                    ProductUpdateView, ProductDownloadView, ProductRatingAjaxView)
 app_name = 'products'
 urlpatterns = [
     #path('<int:id>/', detail_view, name='detail_view'),
@@ -8,6 +9,7 @@ urlpatterns = [
     path('product/<slug:slug>/', ProductDetailView.as_view(), name='detail'),
     path('product/<slug:slug>/edit/', ProductUpdateView.as_view(), name='update'),
     path('product/<slug:slug>/download/', ProductDownloadView.as_view(), name='download'),
+    path('ajax/rating/', ProductRatingAjaxView.as_view(), name='ajax_rating')
 
     #
     # path('create/',create_view, name='create_view'),
